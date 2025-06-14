@@ -1,16 +1,49 @@
 /* Google fonts */
-@import url("https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap');
 
-/* Tailwind */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Tailwind v4 import */
+@import 'tailwindcss';
 
 body {
   margin: 0;
-  font-family: "Exo 2", sans-serif;
+  font-family: 'Exo 2', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   width: 100dvw;
   overflow-x: hidden;
+  background-color: #f0f1f8;
+}
+
+@layer utilities {
+  .bg-jix {
+    background-color: #435edb;
+    color: #f0f1f8;
+    border-radius: 8px;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  .a-jix {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    padding-bottom: 4px;
+  }
+
+  .a-jix::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 4px;
+    background-color: #435edb;
+    border-radius: 2px;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+
+  .a-jix:hover::after {
+    transform: scaleX(1);
+  }
 }

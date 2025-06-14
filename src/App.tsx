@@ -1,10 +1,12 @@
+// Compoents //
+import Nav from './components/Nav';
+
 function App() {
   return (
-    <div className="bg-gray-100">
-      <h1 className="text-4xl font-bold text-blue-600">Hello world</h1>
+    <div className="px-4 md:px-8 lg:px-16 lx:px-32 2xl:px-64">
+      <Nav />
     </div>
   );
 }
 
 export default App;
-// test comment
