@@ -1,9 +1,13 @@
 import { Link } from 'react-router-dom';
+// Components //
+import FilterSearch from '../components/FilterSearch';
+import FeaturedBlogs from '../components/FeaturedBlogs';
+import BlogList from '../components/BlogList';
 
 const Home = () => {
   return (
     <div className="mt-2 flex flex-col gap-2">
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex items-center justify-between gap-4 mb-4">
         {/* Text Section */}
         <div className="flex items-center gap-2 text-base">
           <Link to="/">Home</Link>
@@ -30,6 +34,12 @@ const Home = () => {
             </svg>
           </button>
         </Link>
+      </div>
+      <FilterSearch />
+      <FeaturedBlogs />
+      <div>
+        <h1 className="my-8 text-2xl text-gray-700">New Feeds</h1>
+        <BlogList />
       </div>
     </div>
   );

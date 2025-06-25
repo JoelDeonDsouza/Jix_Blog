@@ -67,25 +67,13 @@ const Nav = () => {
           }`}
         >
           <div className="flex flex-col items-center pt-20 gap-8 font-medium text-lg">
-            <Link
-              to="/"
-              className="a-jix hover:text-blue-600 transition-colors py-2"
-              onClick={handleLinkClick}
-            >
+            <Link to="/" className="a-jix  py-2" onClick={handleLinkClick}>
               Home
             </Link>
-            <Link
-              to="/trending"
-              className="a-jix hover:text-blue-600 transition-colors py-2"
-              onClick={handleLinkClick}
-            >
+            <Link to="/trending" className="a-jix  py-2" onClick={handleLinkClick}>
               Trending
             </Link>
-            <Link
-              to="/about"
-              className="a-jix hover:text-blue-600 transition-colors py-2"
-              onClick={handleLinkClick}
-            >
+            <Link to="/about" className="a-jix  py-2" onClick={handleLinkClick}>
               About
             </Link>
             <SignedOut>
@@ -105,13 +93,13 @@ const Nav = () => {
       </div>
       {/* Desktop */}
       <div className="hidden md:flex items-center gap-8 xl:gap-12 font-medium">
-        <Link to="/" className="a-jix hover:text-blue-600 transition-colors">
+        <Link to="/" className="a-jix">
           Home
         </Link>
-        <Link to="/trending" className="a-jix hover:text-blue-600 transition-colors">
+        <Link to="/trending" className="a-jix">
           Trending
         </Link>
-        <Link to="/about" className="a-jix hover:text-blue-600 transition-colors">
+        <Link to="/about" className="a-jix">
           About
         </Link>
         <SignedOut>

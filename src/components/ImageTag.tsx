@@ -4,8 +4,8 @@ interface ImageTagProps {
   src: string;
   className?: string;
   alt?: string;
-  width: number;
-  height: number;
+  width?: number | `${number}`;
+  height?: number | `${number}`;
 }
 
 const ImageTag = ({ src, className, alt, width, height }: ImageTagProps) => {
@@ -19,6 +19,12 @@ const ImageTag = ({ src, className, alt, width, height }: ImageTagProps) => {
       liqip={{ active: true, quality: 20 }}
       width={width}
       height={height}
+      transformation={[
+        {
+          width: width,
+          height: height,
+        },
+      ]}
     />
   );
 };

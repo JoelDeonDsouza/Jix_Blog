@@ -24,11 +24,11 @@ export const router = createBrowserRouter([
         element: <Register />,
       },
       {
-        path: '/:slug',
+        path: '/blogs',
         element: <BlogLists />,
       },
       {
-        path: '/blog/:id',
+        path: '/:slug',
         element: <Blog />,
       },
       {
