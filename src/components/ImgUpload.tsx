@@ -31,19 +31,16 @@ interface ImgUploadProps {
 }
 const ImgUpload = ({ setProgress, setData, children, type }: ImgUploadProps) => {
   const ref = useRef<HTMLInputElement>(null);
-  const handleImageUploadError = (err: string) => {
-    console.log('Image upload failed:', err);
+  const handleImageUploadError = () => {
     toast.error('Image upload failed');
   };
 
   const handleImageUploadSuccess = (res: ImageKitResponse) => {
-    console.log('Image uploaded successfully:', res);
     setData(res?.filePath);
     toast.success('Image uploaded successfully');
   };
 
   const handleImageUploadProgress = (progress: { loaded: number; total: number }) => {
-    console.log('Image upload progress:', progress);
     setProgress(Math.round((progress.loaded / progress.total) * 100));
   };
   return (

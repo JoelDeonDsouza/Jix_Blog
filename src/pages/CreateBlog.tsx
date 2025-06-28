@@ -97,6 +97,7 @@ const CreateBlog = () => {
             <option value="travel">Travel</option>
             <option value="technology">Technology</option>
             <option value="lifestyle">Lifestyle</option>
+            <option value="lost-hours">Lost Hours</option>
           </select>
         </div>
         <textarea

@@ -75,7 +75,7 @@ const Blog = () => {
                   height={32}
                 />
               )}
-              <Link to="/">{data.user.username}</Link>
+              <Link to={`/blogs?author=${data.user.username}`}>{data.user.username}</Link>
             </div>
             <p className="text:sm text-gray-500">Hello world</p>
             <div className="flex gap-2">
@@ -90,11 +90,8 @@ const Blog = () => {
           <BlogActions blog={data} />
           <h1 className="mt-8 mb-4 text-sm font-medium">Categories</h1>
           <div className="flex flex-col gap-2 text:sm">
-            <Link to="/blogs" className="underline">
-              Hot Feeds
-            </Link>
-            <Link to="/blogs" className="underline">
-              Hot Feeds
+            <Link to={`/blogs?cat=${data.category}`} className="underline">
+              {data.category}
             </Link>
           </div>
           <h1 className="mt-8 mb-4 text-sm font-medium">Search</h1>

@@ -38,11 +38,11 @@ const BlogItem: React.FC<BlogItemProps> = ({ blog }) => {
         </Link>
         <div className="flex items-center gap-2 text-gray-500 text-sm">
           <span>Blog by</span>
-          <Link to="/" className="text-orange-600">
+          <Link to={`/blogs?author=${blog.user.username}`} className="text-orange-600">
             {blog.user.username}
           </Link>
           <span>on</span>
-          <Link to="/" className="text-orange-600">
+          <Link to={`/blogs?cat=${blog.category}`} className="text-orange-600">
             {blog.category}
           </Link>
           <span>{format(blog.createdAt)}</span>

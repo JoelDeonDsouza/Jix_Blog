@@ -49,14 +49,11 @@ const createComment = async (
   commentData: CreateCommentRequest,
   token: string | null,
 ): Promise<CreateCommentResponse> => {
-  // Add blogId to the request body
+  // Add blogId to the request body //
   const requestBody = {
     ...commentData,
     blogId: blogId,
   };
-
-  console.log('Sending comment data:', requestBody);
-
   const response = await axios.post(
     `${import.meta.env.VITE_API_URL}comments/${blogId}`,
     requestBody,

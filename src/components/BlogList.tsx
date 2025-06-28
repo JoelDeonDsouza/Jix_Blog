@@ -2,21 +2,25 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import BlogItem from './BlogItem';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { useSearchParams } from 'react-router-dom';
 
-const fetchBlogData = async (pageParam: number) => {
+const fetchBlogData = async (pageParam: number, seacrhParams: URLSearchParams) => {
+  const searchParamsObj = Object.fromEntries(seacrhParams.entries());
   const response = await axios.get(`${import.meta.env.VITE_API_URL}blogs/list`, {
     params: {
       page: pageParam,
       limit: 2,
+      ...searchParamsObj,
     },
   });
   return response.data;
 };
 
 const BlogList = () => {
+  const [seacrhParams] = useSearchParams();
   const { data, error, fetchNextPage, hasNextPage, status } = useInfiniteQuery({
-    queryKey: ['blogs'],
-    queryFn: ({ pageParam = 1 }) => fetchBlogData(pageParam),
+    queryKey: ['blogs', seacrhParams.toString()],
+    queryFn: ({ pageParam = 1 }) => fetchBlogData(pageParam, seacrhParams),
     initialPageParam: 1,
     getNextPageParam: (lastPage, pages) => (lastPage.totalPages ? pages.length + 1 : undefined),
   });

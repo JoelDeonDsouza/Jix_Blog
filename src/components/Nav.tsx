@@ -70,11 +70,8 @@ const Nav = () => {
             <Link to="/" className="a-jix  py-2" onClick={handleLinkClick}>
               Home
             </Link>
-            <Link to="/trending" className="a-jix  py-2" onClick={handleLinkClick}>
+            <Link to={`/blogs`} className="a-jix  py-2" onClick={handleLinkClick}>
               Trending
-            </Link>
-            <Link to="/about" className="a-jix  py-2" onClick={handleLinkClick}>
-              About
             </Link>
             <SignedOut>
               <Link to="/login" onClick={handleLinkClick}>
@@ -96,11 +93,8 @@ const Nav = () => {
         <Link to="/" className="a-jix">
           Home
         </Link>
-        <Link to="/trending" className="a-jix">
+        <Link to={`/blogs`} className="a-jix">
           Trending
-        </Link>
-        <Link to="/about" className="a-jix">
-          About
         </Link>
         <SignedOut>
           <Link to="/login">
