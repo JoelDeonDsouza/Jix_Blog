@@ -1,20 +1,14 @@
+/**
+ * @author: Joel Deon Dsouza
+ * @description: Displays a blog preview item with cover image, title, metadata, and a short description,long with navigation links to the full blog post and filtered views.
+ * @version: 1.0.1
+ * @date: 2025-06-29
+ */
+
 import { Link } from 'react-router-dom';
 import ImageTag from './ImageTag';
 import { format } from 'timeago.js';
-
-interface Blog {
-  user: User;
-  title: string;
-  desc: string;
-  coverImg: string;
-  slug: string;
-  category: string;
-  createdAt: string;
-}
-
-interface User {
-  username: string;
-}
+import type { Blog } from '../types';
 
 interface BlogItemProps {
   blog: Blog;

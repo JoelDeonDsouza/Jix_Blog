@@ -1,21 +1,15 @@
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+/**
+ * @author: Joel Deon Dsouza
+ * @description: Search input component with icon. Handles keyboard events to trigger search using a custom hook.
+ * @version: 1.0.1
+ * @date: 2025-06-29
+ */
+
+import { useSearch } from '../hooks/useSearch';
 
 const SearchTag = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const [seacrhParams, setSeacrhParams] = useSearchParams();
+  const { handleKeyboardSearch } = useSearch();
 
-  // Handle search //
-  const handleKeySearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      const query = e.currentTarget.value;
-      if (location.pathname === '/blogs') {
-        setSeacrhParams({ ...Object.fromEntries(seacrhParams), search: query });
-      } else {
-        navigate(`/blogs?search=${query}`);
-      }
-    }
-  };
   return (
     <div className="bg-white box-shadow p-2 rounded-md flex items-center gap-2">
       <svg
@@ -37,7 +31,7 @@ const SearchTag = () => {
         placeholder="Explore the unknown..."
         type="text"
         className="bg-transparent focus:outline-none focus:ring-0 focus:border-none"
-        onKeyDown={handleKeySearch}
+        onKeyDown={handleKeyboardSearch}
       />
     </div>
   );

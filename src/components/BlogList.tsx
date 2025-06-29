@@ -1,3 +1,10 @@
+/**
+ * @author: Joel Deon Dsouza
+ * @description: Renders an infinite scrolling list of blog posts with filtering via URL search parameters,using React Query for data fetching and pagination.
+ * @version: 1.0.1
+ * @date: 2025-06-29
+ */
+
 import { useInfiniteQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import BlogItem from './BlogItem';
@@ -9,7 +16,7 @@ const fetchBlogData = async (pageParam: number, seacrhParams: URLSearchParams) =
   const response = await axios.get(`${import.meta.env.VITE_API_URL}blogs/list`, {
     params: {
       page: pageParam,
-      limit: 2,
+      limit: 10,
       ...searchParamsObj,
     },
   });

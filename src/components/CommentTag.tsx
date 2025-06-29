@@ -1,21 +1,13 @@
+/**
+ * @author: Joel Deon Dsouza
+ * @description: Renders a single comment with user details, avatar, timestamp, and content formatting for display in the comment list.
+ * @version: 1.0.1
+ * @date: 2025-06-29
+ */
+
 import ImageTag from './ImageTag';
 import { format } from 'timeago.js';
-
-interface User {
-  _id: string;
-  username: string;
-  img: string;
-}
-
-interface Comment {
-  user: User;
-  desc: string;
-  createdAt: string;
-}
-
-interface CommentTagProps {
-  comment: Comment;
-}
+import type { CommentTagProps } from '../types';
 
 const CommentTag = ({ comment }: CommentTagProps) => {
   const { user, desc, createdAt } = comment;

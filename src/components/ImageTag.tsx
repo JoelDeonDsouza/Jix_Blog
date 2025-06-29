@@ -1,12 +1,12 @@
-import { Image } from '@imagekit/react';
+/**
+ * @author: Joel Deon Dsouza
+ * @description: A reusable ImageKit wrapper component that handles lazy loading, image optimization, and transformation for responsive and performant image rendering.
+ * @version: 1.0.1
+ * @date: 2025-06-29
+ */
 
-interface ImageTagProps {
-  src: string;
-  className?: string;
-  alt?: string;
-  width?: number | `${number}`;
-  height?: number | `${number}`;
-}
+import { Image } from '@imagekit/react';
+import type { ImageTagProps } from '../types';
 
 const ImageTag = ({ src, className, alt, width, height }: ImageTagProps) => {
   return (

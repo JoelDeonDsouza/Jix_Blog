@@ -1,27 +1,12 @@
+/**
+ * @author: Joel Deon Dsouza
+ * @description: Image upload component using ImageKit's React SDK that manages upload progress, success, and error handling while providing a customizable trigger UI for file selection.
+ * @version: 1.0.1
+ * @date: 2025-06-29
+ */
+
 import { IKContext, IKUpload } from 'imagekitio-react';
-import { useRef } from 'react';
-import { toast } from 'react-toastify';
-
-interface ImageKitResponse {
-  filePath: string;
-}
-
-// IMAGEKIT authenticator function to get the upload authentication details //
-const authenticator = async () => {
-  try {
-    const response = await fetch(`${import.meta.env.VITE_API_URL}blogs/upload-auth`);
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Request failed with status ${response.status}: ${errorText}`);
-    }
-    const data = await response.json();
-    const { signature, expire, token, publicKey } = data;
-    return { signature, expire, token, publicKey };
-  } catch (error) {
-    console.error('Authentication error:', error);
-    throw new Error('Authentication request failed');
-  }
-};
+import { useImageUpload } from '../hooks/useImageUpload';
 
 interface ImgUploadProps {
   setProgress: (progress: number) => void;
@@ -29,20 +14,20 @@ interface ImgUploadProps {
   children: React.ReactNode;
   type: string;
 }
+
 const ImgUpload = ({ setProgress, setData, children, type }: ImgUploadProps) => {
-  const ref = useRef<HTMLInputElement>(null);
-  const handleImageUploadError = () => {
-    toast.error('Image upload failed');
-  };
+  const {
+    ref,
+    authenticator,
+    handleImageUploadError,
+    handleImageUploadSuccess,
+    handleImageUploadProgress,
+    triggerUpload,
+  } = useImageUpload({
+    onSuccess: setData,
+    onProgress: setProgress,
+  });
 
-  const handleImageUploadSuccess = (res: ImageKitResponse) => {
-    setData(res?.filePath);
-    toast.success('Image uploaded successfully');
-  };
-
-  const handleImageUploadProgress = (progress: { loaded: number; total: number }) => {
-    setProgress(Math.round((progress.loaded / progress.total) * 100));
-  };
   return (
     <IKContext
       publicKey={import.meta.env.VITE_IMAGEKIT_PUBLIC_KEY}
@@ -58,7 +43,7 @@ const ImgUpload = ({ setProgress, setData, children, type }: ImgUploadProps) => 
         ref={ref}
         accept={`${type}/*`}
       />
-      <div className="cursor-pointer" onClick={() => ref.current && ref.current.click()}>
+      <div className="cursor-pointer" onClick={triggerUpload}>
         {children}
       </div>
     </IKContext>

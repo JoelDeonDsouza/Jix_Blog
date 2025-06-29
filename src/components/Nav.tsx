@@ -1,3 +1,12 @@
+/**
+ * @author: Joel Deon Dsouza
+ * @description: Responsive navigation bar with mobile slide-out menu,
+ * login/logout integration using Clerk, and accessible controls.
+ * Handles outside clicks and escape key to close the mobile menu.
+ * @version: 1.0.1
+ * @date: 2025-06-29
+ */
+
 import { useState, useEffect } from 'react';
 import ImageTag from './ImageTag';
 import { Link } from 'react-router-dom';

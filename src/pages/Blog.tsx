@@ -2,25 +2,13 @@ import ImageTag from '../components/ImageTag';
 import BlogActions from '../components/BlogActions';
 import SearchTag from '../components/SearchTag';
 import CommentList from '../components/CommentList';
-import axios from 'axios';
-import { useQuery } from '@tanstack/react-query';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { format } from 'timeago.js';
-
-const fetchBlog = async (slug: string) => {
-  const response = await axios.get(`${import.meta.env.VITE_API_URL}blogs/${slug}`);
-  return response.data;
-};
+import { useBlog } from '../hooks/useBlog';
 
 const Blog = () => {
-  const { slug } = useParams();
-  const { isPending, error, data } = useQuery({
-    queryKey: ['blog', slug],
-    queryFn: () => {
-      if (!slug) throw new Error('Slug is undefined');
-      return fetchBlog(slug);
-    },
-  });
+  const { isPending, error, data } = useBlog();
+  // Primary renderings //
   if (isPending) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
   if (!data) return <div>No blog found</div>;

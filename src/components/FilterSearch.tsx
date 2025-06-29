@@ -1,3 +1,10 @@
+/**
+ * @author: Joel Deon Dsouza
+ * @description: Renders a horizontal filter bar with category-based blog links and a search component for browsing and narrowing blog content.
+ * @version: 1.0.1
+ * @date: 2025-06-29
+ */
+
 import { Link } from 'react-router-dom';
 import SearchTag from './SearchTag';
 

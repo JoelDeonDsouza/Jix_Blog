@@ -1,165 +1,34 @@
-import { useAuth, useUser } from '@clerk/clerk-react';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
+/**
+ * @author: Joel Deon Dsouza
+ * @description: Component that provides actions for a blog post such as saving, featuring, and deleting, with logic based on user roles and ownership.
+ * @version: 1.0.1
+ * @date: 2025-06-29
+ */
+
+import { useUser } from '@clerk/clerk-react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-
-//  User type //
-interface User {
-  id: string;
-  img: string;
-  username: string;
-}
-
-//  Blog type //
-interface Blog {
-  category: string;
-  content: string;
-  coverImg: string;
-  createdAt: string;
-  desc: string;
-  id: string;
-  isFeatured: boolean;
-  slug: string;
-  title: string;
-  updatedAt: string;
-  user: User;
-  visitCount: number;
-  __v: number;
-  _id: string;
-}
+import type { Blog } from '../types';
+import { useSavedBlogs } from '../hooks/useSavedBlogs';
+import { useBlogActions } from '../hooks/useBlogActions';
 
 interface BlogActionsProps {
   blog: Blog;
 }
 
-interface CustomError extends Error {
-  response?: {
-    status: number;
-    data: {
-      success: boolean;
-      message: string;
-    };
-  };
-}
-
 const BlogActions = ({ blog }: BlogActionsProps) => {
   const { user } = useUser();
-  const { getToken } = useAuth();
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
-  // Fetch saved blogs for the user //
-  const {
-    isPending,
-    error,
-    data: savedBlogs,
-  } = useQuery({
-    queryKey: ['saveBlogs', user?.id],
-    queryFn: async () => {
-      const token = await getToken();
-      const userID = user?.id;
-      return axios.get(`${import.meta.env.VITE_API_URL}users/saved?clerkUserId=${userID}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
-    },
-    enabled: !!user?.id,
-  });
-
+  const { isPending, error, data: savedBlogs } = useSavedBlogs();
+  const { deleteMutation, saveMutation, featuredMutation } = useBlogActions(blog);
   // Check if the user is an admin or if the blog belongs to the user //
   const isAdmin = user?.publicMetadata?.role === 'admin' || false;
-  // This is used to determine if the delete action should be available //
-  const isSaved = savedBlogs?.data?.some((savedBlog: Blog) => savedBlog.id === blog.id) || false;
-
-  // Delete blog mutation //
-  const deleteMutation = useMutation({
-    mutationFn: async () => {
-      const token = await getToken();
-      const clerkUserId = user?.id;
-      return axios.delete(`${import.meta.env.VITE_API_URL}blogs/delete/${blog._id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        data: { clerkUserId },
-      });
-    },
-    onSuccess: () => {
-      toast.success('Blog deleted successfully');
-      navigate('/');
-    },
-    onError: (error) => {
-      toast.error(`Error deleting blog: ${error.message}`);
-    },
-  });
-
-  // Save blog mutation //
-  const saveMutation = useMutation({
-    mutationFn: async () => {
-      const token = await getToken();
-      const clerkUserId = user?.id;
-      const blogId = blog.id;
-      return axios.patch(
-        `${import.meta.env.VITE_API_URL}users/save`,
-        { clerkUserId, blogId },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        },
-      );
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['saveBlogs'] });
-    },
-    onError: (error: CustomError) => {
-      if (
-        error.response?.status === 400 &&
-        error.response?.data?.message === 'Blog is already saved.'
-      ) {
-        toast.info('Blog is already saved');
-      } else {
-        toast.error(`Error saving blog: ${error.message}`);
-      }
-    },
-  });
-
-  // Feature: Save blog action //
-  const featuredMutation = useMutation({
-    mutationFn: async () => {
-      const token = await getToken();
-      const clerkUserId = user?.id;
-      const blogId = blog.id;
-      return axios.patch(
-        `${import.meta.env.VITE_API_URL}blogs/featured`,
-        { clerkUserId, blogId },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        },
-      );
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['blog', blog.slug] });
-    },
-    onError: (error: CustomError) => {
-      toast.error(`Error featuring blog: ${error.message}`);
-    },
-  });
-
-  const handleDelte = () => {
+  const isSaved = savedBlogs?.some((savedBlog: Blog) => savedBlog.id === blog.id) || false;
+  const handleDelete = () => {
     deleteMutation.mutate();
   };
-
   const handleFeature = () => {
     featuredMutation.mutate();
   };
-
   const handleSave = () => {
     if (!user) {
       return navigate('/sign-in');
@@ -232,7 +101,7 @@ const BlogActions = ({ blog }: BlogActionsProps) => {
           {(user && blog.user.username === user?.fullName) || isAdmin ? (
             <div
               className="flex items-center gap-2 py-2  text-sm cursor-pointer"
-              onClick={handleDelte}
+              onClick={handleDelete}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

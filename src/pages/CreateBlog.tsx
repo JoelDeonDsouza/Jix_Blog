@@ -1,55 +1,25 @@
-import { useAuth, useUser } from '@clerk/clerk-react';
-import { useMutation } from '@tanstack/react-query';
 import MDEditor from '@uiw/react-md-editor';
-import axios from 'axios';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import ImgUpload from '../components/ImgUpload';
-
-type BlogPostData = {
-  title: string | null;
-  category: string | null;
-  desc: string | null;
-  content: string;
-  clerkUserId: string;
-  coverImg: string;
-};
+import { useCreateBlog } from '../hooks/useCreateBlog';
+import { useAuthState } from '../hooks/useAuthState';
 
 interface CoverImage {
   filePath: string;
 }
 
 const CreateBlog = () => {
-  const { isLoaded, isSignedIn, user } = useUser();
+  const { isLoaded, isUnauthenticated, user } = useAuthState();
   const [content, setContent] = useState('');
   const [cover, setCover] = useState<CoverImage | null>(null);
   const [progress, setProgress] = useState<number>(0);
 
-  const { getToken } = useAuth();
-  const navigate = useNavigate();
-
-  // Mutation to create a new blog post //
-  const mutation = useMutation({
-    mutationFn: async (newBlogPost: BlogPostData) => {
-      const token = await getToken();
-      return axios.post(`${import.meta.env.VITE_API_URL}blogs/create`, newBlogPost, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
-    },
-    onSuccess: (res) => {
-      toast.success('Blog created successfully!');
-      navigate(`/${res.data.data.slug}`);
-    },
-  });
+  const mutation = useCreateBlog();
 
   if (!isLoaded) {
     return <div>Loading...</div>;
   }
-  if (isLoaded && !isSignedIn) {
+  if (isUnauthenticated) {
     return <div>Please login.</div>;
   }
 
